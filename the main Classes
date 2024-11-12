@@ -224,7 +224,10 @@ public class MainClass {
                     	system.addStudent(name, studentId, age);
                     	}
                     catch(InvalidStudentNameException e) {
-                    	System.out.println(e.getMessage());
+                    	System.out.println("Error: "+ e.getMessage());
+                    }
+                    catch(InvalidStudentIDException e) {
+                    	System.out.println("ID Error: " + e.getMessage());
                     }
 				    
                     break;
@@ -270,4 +273,3 @@ public class MainClass {
         }
     }
 }
-
