@@ -1,0 +1,266 @@
+//the student class that has the students info//
+package mainPackage;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Student {
+    private String name;
+    private String studentId;
+    private int age;
+    private Map<String, Double> grades;  // Course -> Grade
+    private Map<String, Boolean> attendance;  // Course -> Present/Absent
+    
+    // Constructor
+    public Student(String name, String studentId, int age) {
+        this.name = name;
+        this.studentId = studentId;
+        this.age = age;
+        this.grades = new HashMap<>();
+        this.attendance = new HashMap<>();
+    }
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Map<String, Double> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Map<String, Double> grades) {
+        this.grades = grades;
+    }
+
+    public Map<String, Boolean> getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Map<String, Boolean> attendance) {
+        this.attendance = attendance;
+    }
+
+    // Method to add grade for a specific course
+    public void addGrade(String course, double grade) {
+        this.grades.put(course, grade);
+    }
+
+    // Method to add attendance for a specific course
+    public void markAttendance(String course, boolean isPresent) {
+        this.attendance.put(course, isPresent);
+    }
+
+    // Method to display student information
+    public void displayStudentInfo() {
+        System.out.println("Student ID: " + studentId);
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Grades: " + grades);
+        System.out.println("Attendance: " + attendance);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//the managemnt class//
+package mainPackage;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.naming.InvalidNameException;
+
+public class StudentManagementSystem {
+    private Map<String, Student> students;  // Student ID -> Student
+    
+    // Constructor
+    public StudentManagementSystem() {
+        this.students = new HashMap<>();
+    }
+
+    // Add a student
+    public void addStudent(String name, String studentId, int age) {
+    	if(!isValideName(name)) {
+    		throw new InvalidNameException("invalid Student name. name should not contain numbers or symblos or is empty");
+    	}
+        if (!students.containsKey(studentId)) {
+            Student student = new Student(name, studentId, age);
+            students.put(studentId, student);
+            System.out.println("Student added successfully.");
+        } else {
+            System.out.println("Student with this ID already exists.");
+        }
+    }
+    // Student name check
+    private boolean isValideName(String name) {
+    	if (name == null || name.trim().isEmpty()) {
+    		return false; //name should not be empty
+    	}
+    	// check if a name contains only letters and spaces
+    	return name.matches("[a-zA-z\\s]+");
+    }
+
+    // Remove a student by ID
+    public void removeStudent(String studentId) {
+        if (students.containsKey(studentId)) {
+            students.remove(studentId);
+            System.out.println("Student removed successfully.");
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    // Get a student by ID
+    public Student getStudent(String studentId) {
+        return students.get(studentId);
+    }
+
+    // Update student grade
+    public void updateGrade(String studentId, String course, double grade) {
+        Student student = students.get(studentId);
+        if (student != null) {
+            student.addGrade(course, grade);
+            System.out.println("Grade updated successfully.");
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    // Mark student attendance
+    public void markAttendance(String studentId, String course, boolean isPresent) {
+        Student student = students.get(studentId);
+        if (student != null) {
+            student.markAttendance(course, isPresent);
+            System.out.println("Attendance marked successfully.");
+        } else {
+            System.out.println("Student not found.");
+        }
+    }
+
+    // Display all students
+    public void displayAllStudents() {
+        for (Student student : students.values()) {
+            student.displayStudentInfo();
+            System.out.println("------");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+// the main class //
+package mainPackage;
+
+import java.util.Scanner;
+
+public class MainClass {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        StudentManagementSystem system = new StudentManagementSystem();
+        
+        while (true) {
+            System.out.println("Student Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Remove Student");
+            System.out.println("3. Update Grade");
+            System.out.println("4. Mark Attendance");
+            System.out.println("5. Display All Students");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline character
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter student ID: ");
+                    String studentId = scanner.nextLine();
+                    System.out.print("Enter student age: ");
+                    int age = scanner.nextInt();
+                    try {
+                    	system.addStudent(name, studentId, age);
+                    	}
+                    catch(InvalidStudentNameException e) {
+                    	System.out.println(e.getMessage());
+                    }
+				    
+                    break;
+
+                case 2:
+                    System.out.print("Enter student ID to remove: ");
+                    String removeId = scanner.nextLine();
+                    system.removeStudent(removeId);
+                    break;
+
+                case 3:
+                    System.out.print("Enter student ID to update grade: ");
+                    String updateId = scanner.nextLine();
+                    System.out.print("Enter course name: ");
+                    String course = scanner.nextLine();
+                    System.out.print("Enter grade: ");
+                    double grade = scanner.nextDouble();
+                    system.updateGrade(updateId, course, grade);
+                    break;
+
+                case 4:
+                    System.out.print("Enter student ID to mark attendance: ");
+                    String attendanceId = scanner.nextLine();
+                    System.out.print("Enter course name: ");
+                    String courseName = scanner.nextLine();
+                    System.out.print("Is the student present (true/false)? ");
+                    boolean isPresent = scanner.nextBoolean();
+                    system.markAttendance(attendanceId, courseName, isPresent);
+                    break;
+
+                case 5:
+                    system.displayAllStudents();
+                    break;
+
+                case 6:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice, please try again.");
+            }
+        }
+    }
+}
+
