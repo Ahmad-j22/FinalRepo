@@ -98,7 +98,7 @@ package mainPackage;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.InvalidNameException;
+
 
 public class StudentManagementSystem {
     private Map<String, Student> students;  // Student ID -> Student
@@ -109,9 +109,12 @@ public class StudentManagementSystem {
     }
 
     // Add a student
-    public void addStudent(String name, String studentId, int age) {
+    public void addStudent(String name, String studentId, int age) throws InvalidStudentNameException,InvalidStudentIDException{
     	if(!isValideName(name)) {
-    		throw new InvalidNameException("invalid Student name. name should not contain numbers or symblos or is empty");
+    		throw new InvalidStudentNameException("invalid Student name. name should not contain numbers or symblos or is empty");
+    	}
+    	if(!isValidID(studentId)) {
+    		throw new InvalidStudentIDException("ID must be exactly 8 numbers");
     	}
         if (!students.containsKey(studentId)) {
             Student student = new Student(name, studentId, age);
@@ -120,6 +123,7 @@ public class StudentManagementSystem {
         } else {
             System.out.println("Student with this ID already exists.");
         }
+                 
     }
     // Student name check
     private boolean isValideName(String name) {
@@ -128,6 +132,10 @@ public class StudentManagementSystem {
     	}
     	// check if a name contains only letters and spaces
     	return name.matches("[a-zA-z\\s]+");
+    }
+    // checks if ID is 8 numbers or not
+    public boolean isValidID(String studentId) {
+    	return studentId != null && studentId.matches("\\d{8}");
     }
 
     // Remove a student by ID
@@ -175,7 +183,6 @@ public class StudentManagementSystem {
         }
     }
 }
-
 
 
 
