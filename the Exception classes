@@ -1,0 +1,8 @@
+// invalid Student name exsception//
+package mainPackage;
+
+public class InvalidStudentNameException extends Exception{
+	public InvalidStudentNameException(String message) {
+        super(message);
+    }
+}
