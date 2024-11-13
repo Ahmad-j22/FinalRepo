@@ -138,7 +138,7 @@ public class StudentManagementSystem {
     }
     // checks if ID is 8 numbers or not
     public boolean isValidID(String studentId) {
-    	return studentId != null && studentId.matches("\\d{8}");
+    	return studentId != null && studentId.matches("\\d{9}");
     }
     
 
@@ -198,28 +198,23 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainClass {
-	    public static void main(String[] args) {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int choice = -1;
         StudentManagementSystem system = new StudentManagementSystem();
         
         while (true) {
         	try {
-        		System.out.println("------Student Management System--------\n");
-                System.out.println("1. Add Student");
-                System.out.println("2. Remove Student");
-                System.out.println("3. Update Grade");
-                System.out.println("4. Mark Attendance");
-                System.out.println("5. Display All Students");
-                System.out.println("6. Exit");
-                System.out.print("Enter your choice: ");
-                choice = scanner.nextInt();
-                                
-        	}catch (InputMismatchException e) {
-        		System.out.println("Invalid input. please enter a number 1 to 6");
-        		scanner.nextLine();
-        	}
-            
+            System.out.println("-------Student Management System-------\n");
+            System.out.println("1. Add Student");
+            System.out.println("2. Remove Student");
+            System.out.println("3. Update Grade");
+            System.out.println("4. Mark Attendance");
+            System.out.println("5. Display All Students");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline character
+
             switch (choice) {
                 case 1:
                     System.out.print("Enter student name: ");
@@ -232,13 +227,13 @@ public class MainClass {
                     	system.addStudent(name, studentId, age);
                     	}
                     catch(InvalidStudentNameException e) {
-                    	System.out.println("Error: "+ e.getMessage());
+                    	System.out.println(e.getMessage());
                     }
                     catch(InvalidStudentIDException e) {
-                    	System.out.println("ID Error: " + e.getMessage());
+                    	System.out.println( e.getMessage());
                     }
                     catch(InvalidAgeException e) {
-                    	System.out.println("Age Error: ");
+                    	System.out.println(e.getMessage());
                     }
 				    
                     break;
@@ -276,9 +271,16 @@ public class MainClass {
                 case 6:
                     System.out.println("Exiting...");
                     scanner.close();
-                    
-                    
+                    return;
+
+                default:
+                    System.out.println("Invalid input. please enter a number from 1 to 6.");
             }
+        }catch(InputMismatchException e) {
+        	System.out.println("Invalid input. please enter a number from 1 to 6.");
+        	scanner.nextLine();
         }
     }
 }
+}
+
