@@ -92,7 +92,6 @@ public class Student {
 
 
 
-
 //the managemnt class//
 package mainPackage;
 import java.util.HashMap;
@@ -109,13 +108,17 @@ public class StudentManagementSystem {
     }
 
     // Add a student
-    public void addStudent(String name, String studentId, int age) throws InvalidStudentNameException,InvalidStudentIDException{
+    public void addStudent(String name, String studentId, int age) throws InvalidStudentNameException,InvalidStudentIDException,InvalidAgeException{
     	if(!isValideName(name)) {
     		throw new InvalidStudentNameException("invalid Student name. name should not contain numbers or symblos or is empty");
     	}
     	if(!isValidID(studentId)) {
     		throw new InvalidStudentIDException("ID must be exactly 8 numbers");
     	}
+    	if(age <= 0) {
+    		throw new InvalidAgeException("Age must be greater thatn zero");
+    	}
+    	
         if (!students.containsKey(studentId)) {
             Student student = new Student(name, studentId, age);
             students.put(studentId, student);
@@ -137,6 +140,7 @@ public class StudentManagementSystem {
     public boolean isValidID(String studentId) {
     	return studentId != null && studentId.matches("\\d{8}");
     }
+    
 
     // Remove a student by ID
     public void removeStudent(String studentId) {
@@ -187,31 +191,35 @@ public class StudentManagementSystem {
 
 
 
-
-
-
-// the main class //
+// the main class//
 package mainPackage;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainClass {
-    public static void main(String[] args) {
+	    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        int choice = -1;
         StudentManagementSystem system = new StudentManagementSystem();
         
         while (true) {
-            System.out.println("Student Management System");
-            System.out.println("1. Add Student");
-            System.out.println("2. Remove Student");
-            System.out.println("3. Update Grade");
-            System.out.println("4. Mark Attendance");
-            System.out.println("5. Display All Students");
-            System.out.println("6. Exit");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume the newline character
-
+        	try {
+        		System.out.println("------Student Management System--------\n");
+                System.out.println("1. Add Student");
+                System.out.println("2. Remove Student");
+                System.out.println("3. Update Grade");
+                System.out.println("4. Mark Attendance");
+                System.out.println("5. Display All Students");
+                System.out.println("6. Exit");
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextInt();
+                                
+        	}catch (InputMismatchException e) {
+        		System.out.println("Invalid input. please enter a number 1 to 6");
+        		scanner.nextLine();
+        	}
+            
             switch (choice) {
                 case 1:
                     System.out.print("Enter student name: ");
@@ -228,6 +236,9 @@ public class MainClass {
                     }
                     catch(InvalidStudentIDException e) {
                     	System.out.println("ID Error: " + e.getMessage());
+                    }
+                    catch(InvalidAgeException e) {
+                    	System.out.println("Age Error: ");
                     }
 				    
                     break;
@@ -265,10 +276,8 @@ public class MainClass {
                 case 6:
                     System.out.println("Exiting...");
                     scanner.close();
-                    return;
-
-                default:
-                    System.out.println("Invalid choice, please try again.");
+                    
+                    
             }
         }
     }
