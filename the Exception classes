@@ -6,3 +6,25 @@ public class InvalidStudentNameException extends Exception{
         super(message);
     }
 }
+
+
+
+//invalid ID esxception//
+package mainPackage;
+
+public class InvalidStudentIDException extends Exception {
+	public InvalidStudentIDException(String message) {
+        super(message);
+    }
+}
+
+
+//invalid age//
+package mainPackage;
+
+public class InvalidAgeException extends Exception{
+	public InvalidAgeException(String message) {
+		super(message);
+	}
+
+}
