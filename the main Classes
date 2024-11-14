@@ -113,7 +113,7 @@ public class StudentManagementSystem {
     		throw new InvalidStudentNameException("invalid Student name. name should not contain numbers or symblos or is empty");
     	}
     	if(!isValidID(studentId)) {
-    		throw new InvalidStudentIDException("ID must be exactly 8 numbers");
+    		throw new InvalidStudentIDException("ID must be exactly 10 numbers");
     	}
     	if(age <= 0) {
     		throw new InvalidAgeException("Age must be greater thatn zero");
@@ -136,9 +136,9 @@ public class StudentManagementSystem {
     	// check if a name contains only letters and spaces
     	return name.matches("[a-zA-z\\s]+");
     }
-    // checks if ID is 8 numbers or not
+    // checks if ID is 9 numbers or not
     public boolean isValidID(String studentId) {
-    	return studentId != null && studentId.matches("\\d{9}");
+    	return studentId != null && studentId.matches("\\d{10}");
     }
     
 
@@ -146,7 +146,7 @@ public class StudentManagementSystem {
     public void removeStudent(String studentId) {
         if (students.containsKey(studentId)) {
             students.remove(studentId);
-            System.out.println("Student removed successfully.");
+            System.out.println("Student removed successfully.\n\n");
         } else {
             System.out.println("Student not found.");
         }
@@ -187,6 +187,7 @@ public class StudentManagementSystem {
         }
     }
 }
+
 
 
 
@@ -283,4 +284,5 @@ public class MainClass {
     }
 }
 }
+
 
