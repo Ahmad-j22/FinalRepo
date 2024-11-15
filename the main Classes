@@ -275,7 +275,7 @@ public class MainClass {
                     return;
 
                 default:
-                    System.out.println("Invalid input. please enter a number from 1 to 6.");
+                    System.out.println("Invalid input. please Try again.");
             }
         }catch(InputMismatchException e) {
         	System.out.println("Invalid input. please enter a number from 1 to 6.");
@@ -284,5 +284,3 @@ public class MainClass {
     }
 }
 }
-
-
